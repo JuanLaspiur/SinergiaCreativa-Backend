@@ -1,5 +1,5 @@
 import express from 'express';
-import * as CommissionController from '@src/controllers/commissionController';  
+import * as CommissionController from '../controllers/commissionController';  
 
 const router = express.Router();
 

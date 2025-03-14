@@ -11,6 +11,31 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Una lista de productos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   stock:
+ *                     type: integer
+ *                   image:
+ *                     type: string
+ *                   commissions:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
  */
 router.get('/', ProductController.getProducts);
 
@@ -29,6 +54,29 @@ router.get('/', ProductController.getProducts);
  *     responses:
  *       200:
  *         description: Un producto encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 stock:
+ *                   type: integer
+ *                 image:
+ *                   type: string
+ *                 commissions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
  *       404:
  *         description: Producto no encontrado.
  */
@@ -50,15 +98,14 @@ router.get('/:id', ProductController.getProduct);
  *                 type: string
  *               description:
  *                 type: string
+ *               stock:
+ *                 type: integer
+ *               image:
+ *                 type: string
  *               commissions:
  *                 type: array
  *                 items:
- *                   type: object
- *                   properties:
- *                     number:
- *                       type: number
- *                     percentage:
- *                       type: number
+ *                   type: string
  *     responses:
  *       201:
  *         description: Producto creado exitosamente.
@@ -90,15 +137,14 @@ router.post('/', ProductController.createNewProduct);
  *                 type: string
  *               description:
  *                 type: string
+ *               stock:
+ *                 type: integer
+ *               image:
+ *                 type: string
  *               commissions:
  *                 type: array
  *                 items:
- *                   type: object
- *                   properties:
- *                     number:
- *                       type: number
- *                     percentage:
- *                       type: number
+ *                   type: string
  *     responses:
  *       200:
  *         description: Producto actualizado exitosamente.

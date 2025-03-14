@@ -1,4 +1,4 @@
-import { Commission, ICommission  } from "@src/models/Commission";
+import { Commission, ICommission  } from "../models/Commission";
 
 export const createCommission = async (commissionData: ICommission): Promise<ICommission> => {
   try {

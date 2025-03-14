@@ -1,8 +1,8 @@
-import Product, {IProduct} from "@src/models/Product";  
+import Product, {IProduct} from "../models/Product";  
 
 export const getAllProducts = async (): Promise<IProduct[]> => {
   try {
-    return await Product.find();
+    return await Product.find().populate('commissions'); 
   } catch (error) {
     throw new Error('Error fetching products');
   }

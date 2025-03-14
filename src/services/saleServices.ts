@@ -1,4 +1,5 @@
-import Sale, { ISale } from '@src/models/Sale';
+import Sale, { ISale } from '../models/Sale';
+import { Types } from 'mongoose';
 
 /**
  * Crea una nueva venta.
@@ -66,3 +67,62 @@ export const deleteSale = async (id: string): Promise<ISale | null> => {
     throw new Error('Error al eliminar la venta: ' + (error as Error).message);
   }
 };
+
+/**
+ * Obtiene las ventas de un usuario del día.
+ * @param userId - ID del usuario.
+ * @returns Una lista de ventas del día.
+ */
+export const getUserDailySales = async (userId: string) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const sales = await Sale.find({
+      userId: new Types.ObjectId(userId),
+      date: { $gte: today },
+    });
+
+    return { success: true, data: sales };
+  } catch (error) {
+    return { success: false, message: 'Error al obtener las ventas del día', error };
+  }
+};
+
+/**
+ * Obtiene las ventas de un usuario del mes.
+ * @param userId - ID del usuario.
+ * @returns Una lista de ventas del mes.
+ */
+export const getUserMonthlySales = async (userId: string) => {
+  try {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const sales = await Sale.find({
+      userId: new Types.ObjectId(userId),
+      date: { $gte: startOfMonth },
+    });
+
+    return { success: true, data: sales };
+  } catch (error) {
+    return { success: false, message: 'Error al obtener las ventas del mes', error };
+  }
+};
+
+export const getSalesByUserId = async (userId: string): Promise<{ success: boolean; message: string; data?: ISale[]; error?: string }> => {
+  try {
+    const sales = await Sale.find({ userId: new Types.ObjectId(userId) }).populate('product').populate('userId');
+    
+    if (!sales || sales.length === 0) {
+      return { success: false, message: 'Ventas no encontradas', error: 'No se encontraron ventas para el usuario' };
+    }
+
+    return { success: true, message: 'Ventas obtenidas correctamente', data: sales };
+  } catch (error) {
+    return { success: false, message: 'Error al obtener las ventas del usuario', error: (error as Error).message };
+  }
+};
+
+

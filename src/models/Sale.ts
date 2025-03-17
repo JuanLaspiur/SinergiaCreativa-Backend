@@ -5,6 +5,7 @@ export interface ISale extends Document {
   product: Schema.Types.ObjectId;
   userId: Schema.Types.ObjectId;  
   total: number;
+  profit: number; 
   date: Date;
 }
 
@@ -22,6 +23,10 @@ const saleSchema = new Schema<ISale>({
   total: {
     type: Number,
     required: true,
+  },
+  profit: {
+    type: Number, 
+    required: true,  
   },
   date: {
     type: Date,

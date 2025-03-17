@@ -140,17 +140,29 @@ export const getMonthlySales = async (req: Request, res: Response): Promise<void
  * @param req - Solicitud con el parámetro `userId`.
  * @param res - Respuesta a enviar.
  */
-export const getSalesByUserId = async (req: Request, res: Response): Promise<Response> => {
+export const getSalesByUserId = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
-    const sales = await SaleService.getSalesByUserId(userId);
+    const result = await SaleService.getSalesByUserId(userId);
     
-    if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: 'Ventas no encontradas' });
+    if (result.success) {
+      res.status(200).json({
+        success: true,
+        message: 'Ventas obtenidas correctamente',
+        data: result.data,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: result.message,
+        error: result.error,
+      });
     }
-    
-    return res.status(200).json(sales);
   } catch (error) {
-    return res.status(500).json({ message: 'Error al obtener las ventas del usuario', error: (error as Error).message });
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener las ventas del usuario',
+      error: (error as Error).message,
+    });
   }
 };

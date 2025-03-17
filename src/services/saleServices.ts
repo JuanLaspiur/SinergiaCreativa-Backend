@@ -103,7 +103,7 @@ export const getUserMonthlySales = async (userId: string) => {
     const sales = await Sale.find({
       userId: new Types.ObjectId(userId),
       date: { $gte: startOfMonth },
-    });
+    }).populate('product');
 
     return { success: true, data: sales };
   } catch (error) {

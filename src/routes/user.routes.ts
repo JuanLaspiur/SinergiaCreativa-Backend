@@ -122,7 +122,54 @@ router.get(`/`, authMiddleware, UserController.getAllUsers);
  *       500:
  *         description: Internal server error
  */
-router.post(`/`, validateUserRoutes('register'), UserController.createUser); 
+router.post(`/`, validateUserRoutes('register'), UserController.createUser);
 
+/**
+ * @swagger
+ * /users/expected-monthly-income:
+ *   put:
+ *     summary: Update the expected monthly income of a user
+ *     description: Updates the expected monthly income for a specific user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "60c72b2f9d1b2c001f1d1a63"
+ *               expectedMonthlyIncome:
+ *                 type: number
+ *                 example: 5000
+ *     responses:
+ *       200:
+ *         description: Monthly income expectation updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Expectativa mensual actualizada"
+ *                 updatedUser:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "userId"
+ *                     expectedMonthlyIncome:
+ *                       type: number
+ *                       example: 5000
+ *       400:
+ *         description: Bad request, invalid userId or expectedMonthlyIncome
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.put(`/expected-monthly-income`, UserController.updateExpectedMonthlyIncome);
 
 export default router;

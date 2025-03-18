@@ -1,12 +1,13 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-
-interface ICommission extends Document {
+// Define the Commission interface that extends Mongoose's Document
+export interface ICommission extends Document {
   number: number;
   percentage: number;
 }
 
-const CommissionSchema: Schema = new Schema<ICommission>({
+// Define the schema
+const CommissionSchema = new Schema<ICommission>({
   number: {
     type: Number,
     required: true,
@@ -17,6 +18,6 @@ const CommissionSchema: Schema = new Schema<ICommission>({
   },
 });
 
-const Commission = CommissionSchema;
+const Commission = model<ICommission>('Commission', CommissionSchema);
 
-export { Commission, ICommission };
+export { Commission };

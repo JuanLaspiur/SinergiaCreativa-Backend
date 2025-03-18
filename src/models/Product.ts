@@ -1,12 +1,15 @@
 import { Schema, model, Document } from 'mongoose';
-import { Commission, ICommission } from './Commission';  
+import { ICommission } from './Commission';
 
 export interface IProduct extends Document {
   title: string;
   description: string;
+  stock: number;
+  image?: string;
+  price: number; 
+  commissions: ICommission[];
   createdAt: Date;
   updatedAt: Date;
-  commissions: ICommission | ICommission[];  
 }
 
 const productSchema = new Schema<IProduct>({
@@ -18,10 +21,26 @@ const productSchema = new Schema<IProduct>({
     type: String,
     default: '',
   },
-  commissions: {
-    type: [Commission], 
+  stock: {
+    type: Number,
+    required: true,
+    min: 0,
+    default:0
+  },
+  image: {
+    type: String,
     required: false,
   },
+  price: {  
+    type: Number,
+    required: true,
+    default:0  
+  },
+  commissions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Commission',
+    required: false,
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

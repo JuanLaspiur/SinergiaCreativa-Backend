@@ -5,6 +5,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
+  expectedMonthlyIncome?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +20,11 @@ const userSchema: Schema = new Schema(
       set: (value: string) => value.trim()
     },
     password: { type: String, required: true },
+    expectedMonthlyIncome: { 
+      type: Number, 
+      default: 0, 
+      required: false
+    }
   },
   {
     timestamps: true, 

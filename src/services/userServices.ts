@@ -39,4 +39,20 @@ export class UserService {
 
     return { user, token };
   }
+
+  async updateExpectedMonthlyIncome(userId: string, expectedMonthlyIncome: number): Promise<any> {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      user.expectedMonthlyIncome = expectedMonthlyIncome;
+
+      await user.save();
+      return user;
+    } catch (error) {
+      throw new Error(`Error al actualizar la expectativa mensual: ${(error as Error).message}`);
+    }
+  }
 }

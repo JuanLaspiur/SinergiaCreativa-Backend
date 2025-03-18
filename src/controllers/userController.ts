@@ -38,4 +38,15 @@ export class UserController {
       res.status(401).json({ message: error.message });
     }
   }
+
+  static async updateExpectedMonthlyIncome(req: Request, res: Response): Promise<void> {
+    const { userId, expectedMonthlyIncome } = req.body;
+
+    try {
+      const updatedUser = await userService.updateExpectedMonthlyIncome(userId, expectedMonthlyIncome);
+      res.status(200).json({ message: 'Expectativa mensual actualizada', updatedUser });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al actualizar la expectativa mensual', error });
+    }
+  }
 }

@@ -55,4 +55,41 @@ export class UserService {
       throw new Error(`Error al actualizar la expectativa mensual: ${(error as Error).message}`);
     }
   }
+
+  async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<IUser | { message: string, error: number }> {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return { message: 'Usuario no encontrado', error: 1 };
+      }
+
+      const isPasswordValid = await comparePasswords(user.password, currentPassword);
+      if (!isPasswordValid) {
+        return { message: 'Contraseña actual incorrecta', error: 2 };
+      }
+
+      const hashedPassword = await hashPassword(newPassword);
+      user.password = hashedPassword;
+
+      await user.save();
+      return user;
+    } catch (error) {
+      throw new Error(`Error al cambiar la contraseña: ${(error as Error).message}`);
+    }
+  }
+  async deleteUser(userId: string): Promise<{ message: string, error: number }> {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return { message: 'Usuario no encontrado', error: 1 };
+      }
+  
+      await User.deleteOne({ _id: userId }); 
+      return { message: 'Usuario eliminado exitosamente', error: 0 };
+    } catch (error) {
+      throw new Error(`Error al eliminar el usuario: ${(error as Error).message}`);
+    }
+  }
+  
+
 }

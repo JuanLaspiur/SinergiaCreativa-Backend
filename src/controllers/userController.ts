@@ -49,4 +49,37 @@ export class UserController {
       res.status(500).json({ message: 'Error al actualizar la expectativa mensual', error });
     }
   }
+  static async changePassword(req: Request, res: Response): Promise<void> {
+    const { userId } = req.params;  
+    const { currentPassword, newPassword } = req.body;
+  
+    try {
+      const result = await userService.changePassword(userId, currentPassword, newPassword);
+
+      if ((result as { error: number }).error) {
+        res.status(400).json({ message: (result as { message: string }).message });
+      } else {
+        res.status(200).json({ message: 'Contraseña actualizada correctamente', user: result });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error al cambiar la contraseña', error });
+    }
+  }
+  
+
+  static async deleteUser(req: Request, res: Response): Promise<void> {
+    const { userId } = req.params;
+
+    try {
+      const result = await userService.deleteUser(userId);
+      if (result.error) {
+        res.status(400).json({ message: result.message });
+      } else {
+        res.status(200).json({ message: result.message });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar el usuario', error });
+    }
+  }
+
 }

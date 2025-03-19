@@ -172,4 +172,90 @@ router.post(`/`, validateUserRoutes('register'), UserController.createUser);
  */
 router.put(`/expected-monthly-income`, UserController.updateExpectedMonthlyIncome);
 
+
+/**
+ * @swagger
+ * /users/{userId}/change-password:
+ *   put:
+ *     summary: Change user password
+ *     description: Allows a user to change their password.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "60c72b2f9d1b2c001f1d1a63"
+ *         description: The user's ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               currentPassword:
+ *                 type: string
+ *                 example: "OldPassword123"
+ *               newPassword:
+ *                 type: string
+ *                 example: "NewSecurePassword123"
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Contraseña actualizada correctamente"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "userId"
+ *       400:
+ *         description: Invalid current password or new password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.put(`/:userId/change-password`, UserController.changePassword);
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *   delete:
+ *     summary: Delete a user
+ *     description: Deletes a user from the system.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "60c72b2f9d1b2c001f1d1a63"
+ *         description: The user's ID
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Usuario eliminado exitosamente"
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete(`/:userId`, UserController.deleteUser);
+
 export default router;
